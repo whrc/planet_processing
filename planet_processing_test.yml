@@ -10,4 +10,5 @@ dependencies:
   - rioxarray
   - seaborn
   - geemap
+  - zipfile2
 prefix: /home/hrodenhizer/miniconda3/envs/planet_processing_test
