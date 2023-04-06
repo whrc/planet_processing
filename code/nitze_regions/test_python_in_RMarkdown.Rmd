@@ -1,0 +1,124 @@
+Can I use an RMarkdown file to use python to search Planet imagery?
+```{r}
+library(reticulate)
+use_condaenv('planet_processing_test', required = TRUE)
+```
+
+```{python}
+# Load Libraries
+import os
+from dotenv import load_dotenv
+from dotenv import find_dotenv
+import json
+import requests
+from requests.auth import HTTPBasicAuth
+import numpy as np
+import pandas as pd
+import geopandas as gpd
+import shapely as shp
+from pprint import pprint
+import ast
+import seaborn as sns
+import re
+```
+
+```{python}
+# Authentication
+# find '.env'
+load_dotenv(find_dotenv())
+# Get Planet API Key
+api_key = os.getenv('PL_API_KEY')
+# Get GCS Key
+gcs_key = os.getenv('GCS_PL_ORDERS_KEY')
+```
+
+
+```{python}
+search_request = {
+   "item_types":[
+      "PSScene"
+   ],
+   "filter":{
+      "type":"AndFilter",
+      "config":[
+         {
+            "type":"GeometryFilter",
+            "field_name":"geometry",
+            "config":{
+               "type":"Polygon",
+               "coordinates":[
+                  [
+                     [
+                        6.067543029785156,
+                        45.859890320433756
+                     ],
+                     [
+                        6.1969757080078125,
+                        45.859890320433756
+                     ],
+                     [
+                        6.1969757080078125,
+                        45.95831029909359
+                     ],
+                     [
+                        6.067543029785156,
+                        45.95831029909359
+                     ],
+                     [
+                        6.067543029785156,
+                        45.859890320433756
+                     ]
+                  ]
+               ]
+            }
+         },
+         {
+            "type":"DateRangeFilter",
+            "field_name":"acquired",
+            "config":{
+               "gte":"2022-04-14T00:00:00Z",
+               "lte":"2022-04-15T00:00:00Z"
+            }
+         },
+         {
+            "type":"StringInFilter",
+            "field_name":"quality_category",
+            "config":[
+               "standard"
+            ]
+         },
+         {
+            "type":"AssetFilter",
+            "config":[
+               "ortho_analytic_8b"
+            ]
+         },
+         {
+            "type":"RangeFilter",
+            "config":{
+               "gte":0,
+               "lte":0.6
+            },
+            "field_name":"cloud_cover"
+         },
+         {
+            "type":"PermissionFilter",
+            "config":[
+               "assets:download"
+            ]
+         }
+      ]
+   }
+}
+
+search_result = requests.post(
+  'https://api.planet.com/data/v1/quick-search',
+  auth=HTTPBasicAuth(api_key, ''),
+  json=search_request)
+  
+```
+
+```{python}
+search_result.json()
+```
+

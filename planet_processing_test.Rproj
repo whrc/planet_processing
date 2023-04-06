@@ -11,3 +11,7 @@ Encoding: UTF-8
 
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
+
+PythonType: conda
+PythonVersion: 3.8.13
+PythonPath: ~/miniconda3/envs/planet_processing_test/bin/python3.8
