@@ -1,0 +1,1 @@
+All data are stored in the abrupt_thaw bucket of the AbruptThawMapping Google Cloud project at: gs://abrupt_thaw/planet_processing/data/. We are not allowed to share these files publicly. If you think you should be allowed access, please contact hrodenhizer@woodwellclimate.org.
